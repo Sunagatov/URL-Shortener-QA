@@ -15,10 +15,14 @@
     <artifactId>registry-server</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
+    
+    <description>
+        This microservice has registration and discovery function. 
+        It allows other microservices to find and communicate with each other without hard-coding hostname and port.
+    </description>
 
     
     <name>RegistryServer</name>
-
     
     <developers>
         <developer>
@@ -33,7 +37,6 @@
             <timezone>Samara (UTC+4:00)</timezone>
         </developer>
     </developers>
-
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,7 +44,6 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.SR1</spring-cloud.version>
     </properties>
-    
     
     <dependencyManagement>
         <dependencies>
@@ -54,17 +56,11 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -76,5 +72,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
