@@ -11,7 +11,7 @@ from configs import HOST
 class ShorteningLinkAPI:
     def __init__(self):
         """Initializing parameters for request"""
-        self.url = HOST + "/api/shorten"
+        self.url = f"{HOST}/api/shorten"
         self.headers = {"Content-Type": "application/json"}
 
     def shorten_link(
