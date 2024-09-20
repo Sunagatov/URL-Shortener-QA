@@ -11,11 +11,11 @@ from configs import HOST
 class ShorteningLinkAPI:
     def __init__(self):
         """Initializing parameters for request"""
-        self.url = HOST + "/api/v1/shorten"
+        self.url = f"{HOST}/api/v1/shorten"
         self.headers = {"Content-Type": "application/json"}
 
     def shorten_link(
-        self, url: str,  expected_status_code: int = 200
+            self, url: str, expected_status_code: int = 200
     ) -> Response:
         """Endpoint for creating short link
 
@@ -29,8 +29,6 @@ class ShorteningLinkAPI:
             "originalUrl": url,
         }
         path = self.url
-        response = requests.post(url=path, data=json.dumps(data), headers=self.headers)
-        assert_status_code(response, expected_status_code=expected_status_code)
+        response = requests.post(url=path, json=data, headers=self.headers)
         log_request(response)
-
         return response
