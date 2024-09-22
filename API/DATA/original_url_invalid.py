@@ -11,6 +11,16 @@ ORIGINAL_URL_INVALID = [
      'URL must not contain spaces'),
     ('http://.com',
      'URL must have a valid host'),
+    ('https://iced-latte..uk',
+     'URL must have a valid host'),
+    # long label - max: 63 symbols
+    ('https://2hJF3sxaEQPmjBD2R7GVfhviUqgkhhxhdHwfNiO9nMOURq0Pvz5mGTBBdlmGIWnqwertyuiop.uk',
+     'URL must have a valid host'),
+    # short label - min: 2 symbols
+    ('https://2.uk',
+     'URL must have a valid host'),
+    ('https://uk',
+     'URL must have a valid host'),
     pytest.param('https://',
                  'URL must have a valid host',
                  marks=pytest.mark.xfail(reason='Bug (https://shorty-url.atlassian.net/browse/SHORTY-23) '
