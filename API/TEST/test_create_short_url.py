@@ -5,7 +5,7 @@ from hamcrest import assert_that, is_, is_not
 from API.FRAMEWORK.api_endpoints.api_short_link import ShorteningLinkAPI
 from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
-from API.TEST.conftest import create_short_url
+from API.FRAMEWORK.tools.create_short_url import create_short_url
 
 
 @allure.feature("Short URL generation")
