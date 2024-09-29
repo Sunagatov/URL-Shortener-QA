@@ -10,6 +10,9 @@ class MongoDB:
         # Connect to MongoDB cluster
         self.mongodb_client = MongoClient(self.connection_string)
 
+    def close_connection(self) -> None:
+        self.mongodb_client.close()
+
     @step('Delete created short url from MongoDB')
     def delete_created_short_url(self, created_short_url: str) -> int:
         with step(f'Get {self.db_name}'):
@@ -22,9 +25,6 @@ class MongoDB:
             query = {"shortUrl": created_short_url}
             result = url_mappings_collection.delete_one(query)
             return result.deleted_count
-
-    def close_connection(self) -> None:
-        self.mongodb_client.close()
 
     def get_all_short_url(self) -> list:
         with step(f'Get all of short url in collection {self.db_name}.{self.db_collection}'):
