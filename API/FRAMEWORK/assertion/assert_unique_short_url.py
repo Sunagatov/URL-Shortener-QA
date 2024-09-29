@@ -4,6 +4,6 @@ from typing import Sequence
 
 
 @step('Verify that created short url is unique')
-def assert_uniqueness_short_url(created_short_url: str, short_url_list: Sequence[str]) -> None:
+def is_unique_short_url(created_short_url: str, short_url_list: Sequence[str]) -> None:
     assert_that(short_url_list, is_not(has_item(created_short_url)),
                 reason='Created short url is not unique')

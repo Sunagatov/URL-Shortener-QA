@@ -5,12 +5,12 @@ from allure import step
 from dotenv import load_dotenv
 from hamcrest import assert_that, greater_than
 
-from API.FRAMEWORK.mongodb.mongodb import MongoDB
+from API.FRAMEWORK.mongodb.MongoDB import MongoDB
 from configs import MONGODB_DATABASE
 from configs import MONGODB_DATABASE_COLLECTION
 
 
-# Load config from a .env file:
+# Load secret config from a .env file:
 load_dotenv()
 mongodb_uri = os.environ['MONGODB_URI']
 
@@ -32,3 +32,6 @@ def mongodb_fixture() -> MongoDB:
     with step('Verify that created short url was deleted from MongoDB'):
         assert_that(deleted_count, greater_than(0),
                     reason='Created short url was not deleted from MongoDB')
+
+    with step('Close MongoDB connection'):
+        mongodb_client.close_connection()
