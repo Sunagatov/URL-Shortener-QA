@@ -64,8 +64,8 @@ class TestCreateShortUrl:
     @pytest.mark.parametrize('original_url, error_message', LOOPBACK_URL)
     def test_create_short_url_for_loopback_url(self, original_url, error_message):
         with step("Send firstPOST request to create short url for the URL that points to a loopback address"):
-            original_url = original_url
-            response = ShorteningLinkAPI().shorten_link(original_url)
+            url = original_url
+            response = ShorteningLinkAPI().shorten_link(url)
 
         with step("Verify status code"):
             assert_status_code(response, 400)
