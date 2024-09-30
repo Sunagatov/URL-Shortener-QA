@@ -68,8 +68,8 @@ venv.bak/
 .DS_Store
 
 # Allure
-allure_report
-allure_report
+allure-report
+allure-results
 # Config
 
 tests/__pycache__/
