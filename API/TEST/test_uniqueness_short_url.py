@@ -11,7 +11,7 @@ from API.FRAMEWORK.assertion.assert_unique_short_url import is_unique_short_url
 @allure.link("https://short-link.zufargroup.com/webjars/swagger-ui/index.html#/URL%20Shortening/shortenUrl",
              name="Swagger")
 @allure.link("https://team-bov4.testit.software/projects/1/tests/55",
-             name="Test IT Test-Case")
+             name="Test IT Test-Case #55")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.title("Verify that created short url is unique")
 @allure.description(
