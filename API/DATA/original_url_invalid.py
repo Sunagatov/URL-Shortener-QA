@@ -1,6 +1,6 @@
 ORIGINAL_URL_INVALID = [
     ((
-        'http://KXZUrAEbJInXGl9mA8eiMa9JJhXrkQIJ0zqP1CMwpMtunRLaErWquvQoIaNqlJz3pZBeUWMcqAQ2Ekn1'
+        'https://KXZUrAEbJInXGl9mA8eiMa9JJhXrkQIJ0zqP1CMwpMtunRLaErWquvQoIaNqlJz3pZBeUWMcqAQ2Ekn1'
         '6bn2rI7L9WGV7EmA3Gy45GYw9mmq62DJYExUh9sqGSdpbZ6GKB4tcUTXGQedd5Ha2b8BKcEf1Fl0e6ZNEafx2NO'
         'nBCw2h1oPdjaME9BtcIgfp02soqPm6RKxoaNvHRcAFoWdQLxodeieJeWJAOUyy9bm3hRGEVb8ksShFVv1tNCt0B'
         'ivVzYqjvSOKjXZv8HA5U1fOk8veNjfhHGz9JcNBbbQClgREl1wIF26RDuuUi7jGcNxEyJvM0699FrldJtYllVW6'
