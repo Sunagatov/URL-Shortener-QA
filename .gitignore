@@ -70,6 +70,8 @@ venv.bak/
 # Allure
 allure-report
 allure-results
+allure_report
+allure_results
 # Config
 
 tests/__pycache__/
