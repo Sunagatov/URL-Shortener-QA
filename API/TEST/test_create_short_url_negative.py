@@ -1,6 +1,6 @@
 import allure
 from allure import step
-from hamcrest import is_
+from hamcrest import assert_that, is_
 import pytest
 
 from API.DATA.original_url_invalid import ORIGINAL_URL_INVALID
@@ -31,4 +31,5 @@ def test_create_short_url_negative(original_url, error_message):
         assert_content_type(response, "application/json")
 
     with step("Verify error message"):
-        assert response.json()["errorMessage"], is_(error_message)
+        assert_that(response.json()["errorMessage"], is_(error_message),
+                    reason="Error message is not valid")
