@@ -15,9 +15,9 @@ from API.FRAMEWORK.assertion.assert_unique_short_url import is_unique_short_url
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.title("Verify that created short url is unique")
 @allure.description(
-        """WHEN user send POST request to create short url   
+    """WHEN user send POST request to create short url   
            THEN created short url is unique"""
-    )
+)
 def test_uniqueness_short_url(mongodb_fixture):
     original_url = f'https://ya{time.time()}.ru'
 
