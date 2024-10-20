@@ -8,7 +8,7 @@ from configs import HOST
 
 class UrlAPI:
     def __init__(self):
-        self.url = f'{HOST}/api/v1/url'
+        self.url = f'{HOST}/api/v1/urls'
 
     @step('Delete short URL')
     def delete_short_url(self, short_url: str) -> Response:
