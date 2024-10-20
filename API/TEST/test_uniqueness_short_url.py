@@ -1,6 +1,7 @@
 import allure
 import time
 
+import pytest
 from allure import step
 
 from API.FRAMEWORK.tools.create_short_url import create_short_url
@@ -18,15 +19,15 @@ from API.FRAMEWORK.assertion.assert_unique_short_url import is_unique_short_url
     """WHEN user send POST request to create short url   
            THEN created short url is unique"""
 )
-def test_uniqueness_short_url(mongodb_fixture):
-    original_url = f'https://ya{time.time()}.ru'
-
+@pytest.mark.parametrize('create_short_url', [f'https://ya{time.time()}.ru'], indirect=True)
+def test_uniqueness_short_url(mongodb_fixture, create_short_url):
     short_url_list = mongodb_fixture.mongodb_client.get_all_short_url()
 
     with step('Create short url'):
-        created_short_url = create_short_url(original_url)
+        created_short_url, original_url = create_short_url
 
-    is_unique_short_url(created_short_url, short_url_list)
+    with step('Verify that created short url is unique'):
+        is_unique_short_url(created_short_url, short_url_list)
 
-    # return created_short_url variable to mongodb_fixture for deleting created short url from MongoDB
-    mongodb_fixture.created_short_url = created_short_url
+        # return created_short_url variable to mongodb_fixture for deleting created short url from MongoDB
+        mongodb_fixture.created_short_urls.extend([created_short_url])

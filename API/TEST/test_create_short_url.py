@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 from allure import step
@@ -40,10 +42,10 @@ class TestCreateShortUrl:
         """WHEN user send POST request to create short url for the URL already shortened before   
            THEN status HTTP CODE = 200 and response body contains short url with the same short url"""
     )
-    def test_recreate_short_url(self):
+    @pytest.mark.parametrize('create_short_url', [f'https://ya{time.time()}.ru'], indirect=True)
+    def test_recreate_short_url(self, create_short_url):
         with step("Send firstPOST request to create short url"):
-            original_url = "https://weather.com/weather/today/l/de8c78996a73470bbe53d7ea51b93a733ee74f0744de3cf7660665e506a33862"
-            short_url = create_short_url(original_url)
+            created_short_url, original_url = create_short_url
 
         with step("Send second POST request to create short url for the origin URL already shortened"):
             response_recreate_short_url = ShorteningLinkAPI().shorten_link(original_url)
@@ -51,7 +53,7 @@ class TestCreateShortUrl:
 
         with step(
                 "Verify that created short url after second POST request for origin URL is the same as was created before"):
-            assert_that(recreated_short_url, is_(short_url),
+            assert_that(recreated_short_url, is_(created_short_url),
                         reason="Recreated short url is not the same as was created before")
 
     @allure.severity(allure.severity_level.CRITICAL)

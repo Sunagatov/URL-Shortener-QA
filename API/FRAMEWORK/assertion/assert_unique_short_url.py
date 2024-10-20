@@ -1,9 +1,9 @@
-from allure import step
-from hamcrest import assert_that, is_not, has_item
 from typing import Sequence
+
+from allure import step
 
 
 @step('Verify that created short url is unique')
 def is_unique_short_url(created_short_url: str, short_url_list: Sequence[str]) -> None:
-    assert_that(short_url_list, is_not(has_item(created_short_url)),
-                reason='Created short url is not unique')
+    count = short_url_list.count(created_short_url)
+    assert count == 1, f'Created short url appears {count} times in the list, expected exactly once.'

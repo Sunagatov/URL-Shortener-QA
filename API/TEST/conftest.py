@@ -1,4 +1,3 @@
-
 import os
 import pytest
 from allure import step
@@ -17,24 +16,27 @@ if not mongodb_uri:
 
 
 class MongoDbContext:
-    def __init__(self, mongodb_client):
+    def __init__(self, mongodb_client: 'MongoDB'):
         self.mongodb_client = mongodb_client
-        self.created_short_url = None
+        self.created_short_urls = []  # List to track created short URLs
 
 
 @pytest.fixture()
-def mongodb_fixture() -> MongoDB:
+def mongodb_fixture() -> 'MongoDbContext':
     with step('Create MongoDB client'):
-        # Initialize MongoDB with the connection string from the .env file
         mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_DATABASE_COLLECTION)
         context = MongoDbContext(mongodb_client)
         yield context
 
     # Clean up after test execution
-    if context.created_short_url:
-        deleted_count = mongodb_client.delete_created_short_url(context.created_short_url)
-        with step('Verify that the created short URL was deleted from MongoDB'):
-            assert_that(deleted_count, greater_than(0), reason='Created short URL was not deleted from MongoDB')
+    for short_url in context.created_short_urls:
+        deleted_count = context.mongodb_client.delete_created_short_url(short_url)
+        with step(f'Verify that the created short URL {short_url} was deleted from MongoDB'):
+            assert_that(
+                deleted_count,
+                greater_than(0),
+                reason=f'Created short URL {short_url} was not deleted from MongoDB'
+            )
 
     with step('Close MongoDB connection'):
-        mongodb_client.close_connection()
+        context.mongodb_client.close_connection()
