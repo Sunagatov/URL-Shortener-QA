@@ -1,13 +1,11 @@
-import allure
-import pytest
 import time
 
+import allure
+import pytest
 from allure import step
 
-from API.FRAMEWORK.api_endpoints.api_url import UrlAPI
-from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.assertion.assert_response_header_value import assert_response_header_value
-from API.FRAMEWORK.tools.create_short_url import create_short_url
+from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.tools.redirect_to_original_url import redirect_to_original_url
 
 

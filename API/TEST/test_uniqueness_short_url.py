@@ -1,10 +1,9 @@
-import allure
 import time
 
+import allure
 import pytest
 from allure import step
 
-from API.FRAMEWORK.tools.create_short_url import create_short_url
 from API.FRAMEWORK.assertion.assert_unique_short_url import is_unique_short_url
 
 

@@ -2,9 +2,10 @@ import allure
 import pytest
 from allure import step
 
-from API.FRAMEWORK.api_endpoints.api_get_short_url import GetShortUrlAPI
+
 from API.FRAMEWORK.api_endpoints.api_short_link import ShorteningLinkAPI
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
+from API.FRAMEWORK.tools.redirect_to_original_url import redirect_to_original_url
 
 
 @allure.feature("2. Link Redirection")
@@ -37,7 +38,7 @@ class TestRedirection:
                                                                         short_url2=short_url_2,
                                                                         )
         with step("Get short url #1"):
-            response = GetShortUrlAPI().get_short_url(short_url_1)
+            response = redirect_to_original_url(short_url_1)
 
         with step("Verify status code"):
             assert_status_code(response, 400)
