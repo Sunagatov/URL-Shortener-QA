@@ -11,7 +11,7 @@ from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.mongodb.MongoDB import MongoDB
-from configs import MONGODB_DATABASE, MONGODB_DATABASE_COLLECTION
+from configs import MONGODB_DATABASE, MONGODB_COLLECTION_URL, MONGODB_COLLECTION_USER
 
 # Load secret config from a .env file:
 load_dotenv()
@@ -30,7 +30,7 @@ class MongoDbContext:
 @pytest.fixture()
 def mongodb_fixture() -> 'MongoDbContext':
     with step('Create MongoDB client'):
-        mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_DATABASE_COLLECTION)
+        mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_COLLECTION_URL)
         context = MongoDbContext(mongodb_client)
         yield context
 
@@ -70,7 +70,27 @@ def create_short_url(request):
 
 
 @pytest.fixture()
-def sign_up(request) -> Response:
+def sign_up_fixture(request) -> Response:
     user_data = request.param
-    response = AuthAPI.sign_up(*user_data)
+    with step("Create Auth API client"):
+        auth_api = AuthAPI()
+    response = auth_api.sign_up(*user_data)
+
     yield response
+
+    with step('Create MongoDB client'):
+        mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_COLLECTION_USER)
+
+    email = user_data[2]
+    deleted_count = mongodb_client.delete_user(email)
+    print(f'Deleted documents count {deleted_count}')
+
+    with step(f'Verify that the created user {user_data[0]} {user_data[1]} was deleted from MongoDB'):
+        assert_that(
+            deleted_count,
+            greater_than(0),
+            reason=f'Created user {user_data[0]} {user_data[1]} was not deleted from MongoDB'
+        )
+
+    with step('Close MongoDB connection'):
+        mongodb_client.close_connection()

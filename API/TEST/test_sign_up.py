@@ -15,7 +15,9 @@ from API.DATA.user_valid import USER_VALID
 )
 @allure.link("https://shorty-url.atlassian.net/wiki/x/EgD4", name="FR")
 # @allure.link("https://TestIT", name="Test IT Test-Case #")
-@pytest.mark.parametrize('user_data', USER_VALID, indirect=True)
-def test_sign_up(user_data, sign_up):
-    response = sign_up
+@pytest.mark.parametrize('sign_up_fixture', USER_VALID, indirect=True)
+def test_sign_up(sign_up_fixture):
+    response = sign_up_fixture
     print(response.json())
+
+
