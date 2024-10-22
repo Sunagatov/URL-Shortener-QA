@@ -3,9 +3,11 @@ import pytest
 from allure import step
 from dotenv import load_dotenv
 from hamcrest import assert_that, greater_than
+from requests import Response
 
 from API.FRAMEWORK.api_endpoints.api_short_link import ShorteningLinkAPI
 from API.FRAMEWORK.api_endpoints.api_url import UrlAPI
+from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.mongodb.MongoDB import MongoDB
@@ -65,3 +67,10 @@ def create_short_url(request):
 
     with step("Delete created short url"):
         UrlAPI().delete_short_url(created_short_url)
+
+
+@pytest.fixture()
+def sign_up(request) -> Response:
+    user_data = request.param
+    response = AuthAPI.sign_up(*user_data)
+    yield response
