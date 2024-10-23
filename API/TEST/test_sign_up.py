@@ -22,7 +22,6 @@ from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
 @pytest.mark.parametrize('sign_up_fixture', USER_VALID, indirect=True)
 def test_sign_up(sign_up_fixture):
     response = sign_up_fixture
-    print(response.json())
 
     with step("Verify status code"):
         assert_status_code(response, 200)

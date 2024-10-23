@@ -83,7 +83,6 @@ def sign_up_fixture(request) -> Response:
 
     email = user_data[2]
     deleted_count = mongodb_client.delete_user(email)
-    print(f'Deleted documents count {deleted_count}')
 
     with step(f'Verify that the created user {user_data[0]} {user_data[1]} was deleted from MongoDB'):
         assert_that(

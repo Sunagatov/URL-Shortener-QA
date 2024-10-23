@@ -10,7 +10,7 @@ class AuthAPI:
     def __init__(self):
         self.url = f'{HOST}/api/v1/auth'
 
-    @step('Sign-UP')
+    @step('Sign-Up')
     def sign_up(
             self,
             first_name: str,
