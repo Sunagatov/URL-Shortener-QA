@@ -1,7 +1,11 @@
 import allure
 import pytest
+from allure import step
+from hamcrest import assert_that, is_not
 
 from API.DATA.user_valid import USER_VALID
+from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
+from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
 
 
 @allure.feature("5. Sign up (User Registration)")
@@ -20,4 +24,24 @@ def test_sign_up(sign_up_fixture):
     response = sign_up_fixture
     print(response.json())
 
+    with step("Verify status code"):
+        assert_status_code(response, 200)
 
+    with step("Verify content-type"):
+        assert_content_type(response, "application/json")
+
+    with step("Verify accessToken in the response body"):
+        access_token = response.json()['accessToken']
+        assert_that(
+            access_token,
+            is_not(None),
+            reason='There is not accessToken field in the response body'
+        )
+
+    with step("Verify refreshToken in the response body"):
+        refresh_token = response.json()['refreshToken']
+        assert_that(
+            refresh_token,
+            is_not(None),
+            reason='There is not refreshToken field in the response body'
+        )
