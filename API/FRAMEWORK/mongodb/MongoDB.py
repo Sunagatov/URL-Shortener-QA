@@ -29,6 +29,19 @@ class MongoDB:
             result = url_mappings_collection.delete_one(query)
             return result.deleted_count
 
+    @step('Delete user from MongoDB')
+    def delete_user(self, email: str) -> int:
+        with step(f'Get {self.db_name}'):
+            shorty_url_db = self.mongodb_client[self.db_name]
+
+        with step(f'Get {self.db_collection} collection'):
+            user_details_collection = shorty_url_db[self.db_collection]
+
+        with step('Delete user'):
+            query = {"email": email}
+            result = user_details_collection.delete_one(query)
+            return result.deleted_count
+
     def get_all_short_url(self) -> list:
         """Get all short URLs from the collection."""
         with step(f'Get all of short URL in collection {self.db_name}.{self.db_collection}'):
