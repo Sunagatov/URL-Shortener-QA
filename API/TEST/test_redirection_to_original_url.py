@@ -25,8 +25,8 @@ class TestRedirection:
     @pytest.mark.parametrize('create_short_url', [f'https://ya{time.time()}.ru'], indirect=True)
     def test_redirection(self, create_short_url):
         with step("Create short url"):
-            created_short_url, original_url = create_short_url
-            print(f'Created short url: {created_short_url}')
+            created_short_url = create_short_url["created_short_url"]
+            original_url = create_short_url["original_url"]
 
         with step("Redirect to original url"):
             redirect_response = redirect_to_original_url(created_short_url)
@@ -48,7 +48,8 @@ class TestRedirection:
     @pytest.mark.xfail(reason='This feature is not implemented', run=True)
     def test_redirection_with_query_params(self, create_short_url):
         with step("Create short url"):
-            created_short_url, original_url = create_short_url
+            created_short_url = create_short_url["created_short_url"]
+            original_url = create_short_url["original_url"]
             query_params = '?test1=value1&test2=value2'
 
         with step("Redirect to original url"):

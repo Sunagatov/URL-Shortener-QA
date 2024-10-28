@@ -104,3 +104,13 @@ class MongoDB:
 
         print(f"Document for {short_url1}: {doc1}")
         print(f"Document for {short_url2}: {doc2}")
+
+    @step('Get information about url from MongoDB')
+    def get_url_info(self, short_url: str, ) -> dict:
+        with step(f'Get {self.db_name} database'):
+            db = self.mongodb_client[self.db_name]
+
+        with step(f'Get {self.db_collection} collection'):
+            url_mappings_collection = db[self.db_collection]
+
+        return url_mappings_collection.find_one({"shortUrl": short_url})
