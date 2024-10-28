@@ -1,10 +1,8 @@
-import json
 from typing import Optional
 
 import requests
 from requests import Response
 
-from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.tools.loggin_allure import log_request
 from configs import HOST
 
