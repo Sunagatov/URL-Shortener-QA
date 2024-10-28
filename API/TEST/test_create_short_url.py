@@ -44,7 +44,8 @@ class TestCreateShortUrl:
     @pytest.mark.parametrize('create_short_url', [f'https://ya{time.time()}.ru'], indirect=True)
     def test_recreate_short_url(self, create_short_url):
         with step("Send firstPOST request to create short url"):
-            created_short_url, original_url = create_short_url
+            created_short_url = create_short_url["created_short_url"]
+            original_url = create_short_url["original_url"]
 
         with step("Send second POST request to create short url for the origin URL already shortened"):
             response_recreate_short_url = ShorteningLinkAPI().shorten_link(original_url)

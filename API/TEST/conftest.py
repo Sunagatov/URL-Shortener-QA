@@ -1,15 +1,13 @@
 import os
+
 import pytest
 from allure import step
 from dotenv import load_dotenv
 from hamcrest import assert_that, greater_than
 from requests import Response
 
-from API.FRAMEWORK.api_endpoints.api_short_link import ShorteningLinkAPI
-from API.FRAMEWORK.api_endpoints.api_url import UrlAPI
 from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
-from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
-from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
+from API.FRAMEWORK.api_endpoints.api_short_link import ShorteningLinkAPI
 from API.FRAMEWORK.mongodb.MongoDB import MongoDB
 from configs import MONGODB_DATABASE, MONGODB_COLLECTION_URL, MONGODB_COLLECTION_USER
 
@@ -50,23 +48,44 @@ def mongodb_fixture() -> 'MongoDbContext':
 
 @pytest.fixture(scope="function")
 def create_short_url(request):
+    mongodb_client = None  # Initialize mongodb_client to None
+    created_short_url = None  # Initialize created_short_url to None
     with step("Send POST request to create short url"):
-        original_url = request.param
-        response = ShorteningLinkAPI().shorten_link(original_url)
+        if isinstance(request.param, dict):
+            original_url = request.param.get('original_url')
+            days_count = request.param.get('days_count')  # Optional parameter
+        else:
+            original_url = request.param
+            days_count = None
 
-    with step("Get created short url from response body"):
-        created_short_url = response.json()["shortUrl"]
+        response = ShorteningLinkAPI().shorten_link(url=original_url, days_count=days_count)
 
-    with step("Verify status code"):
-        assert_status_code(response, 200)
+        if response.status_code == 200:
+            created_short_url = response.json()["shortUrl"]
 
-    with step("Verify content-type"):
-        assert_content_type(response, "application/json")
+    yield {
+        'response': response,
+        'created_short_url': created_short_url,
+        'days_count': days_count,
+        'original_url': original_url
+    }
 
-    yield created_short_url, original_url
+    if response.status_code == 200:
+        with step('Create MongoDB client'):
+            mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_COLLECTION_URL)
 
-    with step("Delete created short url"):
-        UrlAPI().delete_short_url(created_short_url)
+        deleted_count = mongodb_client.delete_created_short_url(created_short_url)
+        with step(f'Verify that the created short URL {created_short_url} was deleted from MongoDB'):
+            assert_that(
+                deleted_count,
+                greater_than(0),
+                reason=f'Created short URL {created_short_url} was not deleted from MongoDB'
+            )
+
+    # Ensure the MongoDB client is closed if it was created
+    if mongodb_client is not None:
+        with step('Close MongoDB connection'):
+            mongodb_client.close_connection()
 
 
 @pytest.fixture()
@@ -76,7 +95,7 @@ def sign_up_fixture(request) -> Response:
         auth_api = AuthAPI()
     response = auth_api.sign_up(*user_data)
 
-    yield response
+    yield {"response": response, "user_data": user_data}
 
     with step('Create MongoDB client'):
         mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_COLLECTION_USER)

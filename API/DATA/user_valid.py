@@ -1,6 +1,5 @@
 import pytest
 
-
 # (first name, last name, email, password, country, age)
 USER_VALID = [
     ('A', 'A', 'mail123mail@ma123il.ru', '12345Qw!', 'B', 13),
@@ -20,3 +19,5 @@ USER_VALID = [
      '1234567Qwerty$', 'France', 28),
     ('Ilya', 'Ilya', 'mail@mail-mail.ru', '1234567Qwerty$', 'France', 28)
 ]
+
+USER_TO_CREATE = [('Tetiana', 'Test', 'test@mail.ru', '1234567Qwerty$', 'France', 28)]
