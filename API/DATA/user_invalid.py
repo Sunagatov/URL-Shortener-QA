@@ -43,3 +43,11 @@ USER_PASSWORD_WITHOUT_UPPERCASE = [
 USER_PASSWORD_WITHOUT_LOWERCASE = [
     ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'PASSWORD123!', 'Russia', 28)
 ]
+
+USER_PASSWORD_WITHOUT_DIGITS = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Password!', 'Russia', 28)
+]
+
+USER_PASSWORD_WITHOUT_SPEC_CHAR = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Password123', 'Russia', 28)
+]
