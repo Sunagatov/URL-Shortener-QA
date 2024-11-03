@@ -6,7 +6,7 @@ from API.DATA.user_valid import USER_TO_CREATE
 from API.DATA.user_invalid import USER_EMAIL_EMPTY, USER_EMAIL_INVALID, USER_EMAIL_LONG
 from API.DATA.user_invalid import USER_PASSWORD_EMPTY, USER_PASSWORD_SHORT, USER_PASSWORD_WITHOUT_UPPERCASE, \
     USER_PASSWORD_WITHOUT_LOWERCASE, USER_PASSWORD_WITHOUT_DIGITS, USER_PASSWORD_WITHOUT_SPEC_CHAR, \
-    USER_PASSWORD_WITH_SPACES, USER_PASSWORD_LONG
+    USER_PASSWORD_WITH_SPACES, USER_PASSWORD_LONG, USER_PASSWORD_INVALID
 
 from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
@@ -285,3 +285,51 @@ class TestSignUpNegative:
         with step("Verify response message is 'Password must not contain spaces'"):
             assert_message_in_response(response, "Password must not contain spaces")
 
+    @allure.title("Verify that user can not register with too long password")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with too long password,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the password is too long.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.3-Password-Constraints-Validation-(Implemented)"), name="FR5.3")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/102", name="Test IT Test-Case #102")
+    @pytest.mark.parametrize('sign_up_fixture', USER_PASSWORD_LONG, indirect=True)
+    def test_password_long(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password is too long'"):
+            assert_message_in_response(response, "Password is too long")
+
+    @allure.title("Verify that user can not register with invalid password")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with invalid password,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the password contains invalid characters.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.3-Password-Constraints-Validation-(Implemented)"), name="FR5.3")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/102", name="Test IT Test-Case #102")
+    @pytest.mark.xfail(reason="Bug is not fixed: ", run=True)
+    @pytest.mark.parametrize('sign_up_fixture', USER_PASSWORD_INVALID, indirect=True)
+    def test_password_invalid(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password contains invalid characters'"):
+            assert_message_in_response(response, "Password contains invalid characters")

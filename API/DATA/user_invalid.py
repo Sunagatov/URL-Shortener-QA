@@ -59,3 +59,7 @@ USER_PASSWORD_WITH_SPACES = [
 USER_PASSWORD_LONG = [
     ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'm8xSe8HYiZ2eVxTYUYXQmpmqNkbicXsyatIQLtCQftC3jlMvUM!', 'Russia', 28)
 ]
+
+USER_PASSWORD_INVALID = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+]
