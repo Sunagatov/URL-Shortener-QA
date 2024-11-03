@@ -4,7 +4,6 @@ import pytest
 from allure import step
 from dotenv import load_dotenv
 from hamcrest import assert_that, greater_than
-from requests import Response
 
 from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.api_endpoints.api_short_link import ShorteningLinkAPI
@@ -89,7 +88,7 @@ def create_short_url(request):
 
 
 @pytest.fixture()
-def sign_up_fixture(request) -> Response:
+def sign_up_fixture(request) -> dict:
     user_data = request.param
     with step("Create Auth API client"):
         auth_api = AuthAPI()
@@ -97,18 +96,20 @@ def sign_up_fixture(request) -> Response:
 
     yield {"response": response, "user_data": user_data}
 
-    with step('Create MongoDB client'):
-        mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_COLLECTION_USER)
+    # if the user has been created, delete it from MongoDB
+    if response.status_code in (200, 201):
+        with step('Create MongoDB client'):
+            mongodb_client = MongoDB(mongodb_uri, MONGODB_DATABASE, MONGODB_COLLECTION_USER)
 
-    email = user_data[2]
-    deleted_count = mongodb_client.delete_user(email)
+        email = user_data[2]
+        deleted_count = mongodb_client.delete_user(email)
 
-    with step(f'Verify that the created user {user_data[0]} {user_data[1]} was deleted from MongoDB'):
-        assert_that(
-            deleted_count,
-            greater_than(0),
-            reason=f'Created user {user_data[0]} {user_data[1]} was not deleted from MongoDB'
-        )
+        with step(f'Verify that the created user {user_data[0]} {user_data[1]} was deleted from MongoDB'):
+            assert_that(
+                deleted_count,
+                greater_than(0),
+                reason=f'Created user {user_data[0]} {user_data[1]} was not deleted from MongoDB'
+            )
 
-    with step('Close MongoDB connection'):
-        mongodb_client.close_connection()
+        with step('Close MongoDB connection'):
+            mongodb_client.close_connection()
