@@ -4,6 +4,9 @@ from allure import step
 
 from API.DATA.user_valid import USER_TO_CREATE
 from API.DATA.user_invalid import USER_EMAIL_EMPTY, USER_EMAIL_INVALID, USER_EMAIL_LONG
+from API.DATA.user_invalid import USER_PASSWORD_EMPTY, USER_PASSWORD_SHORT, USER_PASSWORD_WITHOUT_UPPERCASE, \
+    USER_PASSWORD_WITHOUT_LOWERCASE
+
 from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
@@ -75,7 +78,6 @@ class TestSignUpNegative:
     @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
                   "+Sign+up+User+Registration#5.2-Email-Constraints-Validation-(Implemented)"), name="FR5.2")
     @allure.link("https://team-bov4.testit.software/projects/1/tests/97", name="Test IT Test-Case #97")
-    # @pytest.mark.xfail(reason="Bug is not fixed: https://shorty-url.atlassian.net/browse/SHORTY-83", run=True)
     @pytest.mark.parametrize('sign_up_fixture', USER_EMAIL_INVALID, indirect=True)
     def test_email_invalid(self, sign_up_fixture):
         response = sign_up_fixture["response"]
@@ -100,7 +102,6 @@ class TestSignUpNegative:
     @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
                   "+Sign+up+User+Registration#5.2-Email-Constraints-Validation-(Implemented)"), name="FR5.2")
     @allure.link("https://team-bov4.testit.software/projects/1/tests/98", name="Test IT Test-Case #98")
-    # @pytest.mark.xfail(reason="Bug is not fixed: https://shorty-url.atlassian.net/browse/SHORTY-83", run=True)
     @pytest.mark.parametrize('sign_up_fixture', USER_EMAIL_LONG, indirect=True)
     def test_email_long(self, sign_up_fixture):
         response = sign_up_fixture["response"]
@@ -113,3 +114,99 @@ class TestSignUpNegative:
 
         with step("Verify response message is 'Email format is too long'"):
             assert_message_in_response(response, "Email is too long")
+
+    @allure.title("Verify that user can not register with empty password")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with empty password,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the password must not be empty.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.3-Password-Constraints-Validation-(Implemented)"), name="FR5.3")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/100", name="Test IT Test-Case #100")
+    @pytest.mark.parametrize('sign_up_fixture', USER_PASSWORD_EMPTY, indirect=True)
+    def test_password_empty(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password must not be empty'"):
+            assert_message_in_response(response, "Password must not be empty")
+
+    @allure.title("Verify that user can not register with too short password")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with too short password,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the password must be at least 8 characters long.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.3-Password-Constraints-Validation-(Implemented)"), name="FR5.3")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/102", name="Test IT Test-Case #102")
+    @pytest.mark.parametrize('sign_up_fixture', USER_PASSWORD_SHORT, indirect=True)
+    def test_password_short(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password must be at least 8 characters long'"):
+            assert_message_in_response(response, "Password must be at least 8 characters long")
+
+    @allure.title("Verify that user can not register with password without uppercase letter")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with password without uppercase letter,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the password must contain at least one uppercase letter.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.3-Password-Constraints-Validation-(Implemented)"), name="FR5.3")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/102", name="Test IT Test-Case #102")
+    @pytest.mark.parametrize('sign_up_fixture', USER_PASSWORD_WITHOUT_UPPERCASE, indirect=True)
+    def test_password_without_uppercase(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password must contain at least one uppercase letter'"):
+            assert_message_in_response(response, "Password must contain at least one uppercase letter")
+
+    @allure.title("Verify that user can not register with password without lowercase letter")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with password without lowercase letter,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the password must contain at least one lowercase letter.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.3-Password-Constraints-Validation-(Implemented)"), name="FR5.3")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/102", name="Test IT Test-Case #102")
+    @pytest.mark.parametrize('sign_up_fixture', USER_PASSWORD_WITHOUT_UPPERCASE, indirect=True)
+    def test_password_without_lowercase(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password must contain at least one uppercase letter'"):
+            assert_message_in_response(response, "Password must contain at least one uppercase letter")

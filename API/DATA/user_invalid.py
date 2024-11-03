@@ -27,3 +27,19 @@ USER_EMAIL_INVALID = [
 USER_EMAIL_LONG = [
     ('Ilya', 'Ilyin', 'mail@vOwMHeEWodFHcVaInngAkixEWDdT.mmnvudSGWjeHIHbJPecEF4gwX62xS.fkXJv4I365ylcfn7T4kvnCd91G9uz8OdH5RrNc6TsW.4AyHZg1FLNSTjjz1YO6IVHqE2v7pQLeGxySv0.asKIyyKSNxXLQqYakc0MfXoXIX8TQNX5.CKugWYrbcjYgchqzerhPGUM1ItNfTXYRbO.oT8Bk1Qnk6gCXg52Uwhqweeewwwwww5Dg5svDdAd5AxrFWazB.5P', '123456Qwerty!', 'Russia', 28)
 ]
+
+USER_PASSWORD_EMPTY = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', '', 'Russia', 28)
+]
+
+USER_PASSWORD_SHORT = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Pass1!', 'Russia', 28)
+]
+
+USER_PASSWORD_WITHOUT_UPPERCASE = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'password123!', 'Russia', 28)
+]
+
+USER_PASSWORD_WITHOUT_LOWERCASE = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'PASSWORD123!', 'Russia', 28)
+]
