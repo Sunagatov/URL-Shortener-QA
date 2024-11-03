@@ -51,3 +51,11 @@ USER_PASSWORD_WITHOUT_DIGITS = [
 USER_PASSWORD_WITHOUT_SPEC_CHAR = [
     ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Password123', 'Russia', 28)
 ]
+
+USER_PASSWORD_WITH_SPACES = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Pas sword123!', 'Russia', 28)
+]
+
+USER_PASSWORD_LONG = [
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'm8xSe8HYiZ2eVxTYUYXQmpmqNkbicXsyatIQLtCQftC3jlMvUM!', 'Russia', 28)
+]
