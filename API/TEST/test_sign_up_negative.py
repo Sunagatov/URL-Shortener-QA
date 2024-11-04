@@ -3,10 +3,12 @@ import pytest
 from allure import step
 
 from API.DATA.user_valid import USER_TO_CREATE
-from API.DATA.user_invalid import USER_EMAIL_EMPTY, USER_EMAIL_INVALID, USER_EMAIL_LONG
-from API.DATA.user_invalid import USER_PASSWORD_EMPTY, USER_PASSWORD_SHORT, USER_PASSWORD_WITHOUT_UPPERCASE, \
-    USER_PASSWORD_WITHOUT_LOWERCASE, USER_PASSWORD_WITHOUT_DIGITS, USER_PASSWORD_WITHOUT_SPEC_CHAR, \
-    USER_PASSWORD_WITH_SPACES, USER_PASSWORD_LONG, USER_PASSWORD_INVALID
+from API.DATA.user_invalid import (USER_EMAIL_EMPTY, USER_EMAIL_INVALID, USER_EMAIL_LONG,
+                                   USER_PASSWORD_EMPTY, USER_PASSWORD_SHORT, USER_PASSWORD_WITHOUT_UPPERCASE,
+                                   USER_PASSWORD_WITHOUT_LOWERCASE, USER_PASSWORD_WITHOUT_DIGITS,
+                                   USER_PASSWORD_WITHOUT_SPEC_CHAR, USER_PASSWORD_WITH_SPACES, USER_PASSWORD_LONG,
+                                   USER_PASSWORD_INVALID,
+                                   USER_FIRST_NAME_EMPTY, USER_FIRST_NAME_INVALID, USER_FIRST_NAME_LONG)
 
 from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
@@ -333,3 +335,75 @@ class TestSignUpNegative:
 
         with step("Verify response message is 'Password contains invalid characters'"):
             assert_message_in_response(response, "Password contains invalid characters")
+
+    @allure.title("Verify that user can not register with empty first name")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with empty first name,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the first name must not be empty.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.4-First-Name-Constraints-Validation-(Implemented)"), name="FR5.4")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/105", name="Test IT Test-Case #105")
+    @pytest.mark.parametrize('sign_up_fixture', USER_FIRST_NAME_EMPTY, indirect=True)
+    def test_empty_first_name(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'First name must not be empty'"):
+            assert_message_in_response(response, "First name must not be empty")
+
+    @allure.title("Verify that user can not register with invalid first name")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with invalid first name,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the first name contains invalid characters.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.4-First-Name-Constraints-Validation-(Implemented)"), name="FR5.4")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/107", name="Test IT Test-Case #107")
+    @pytest.mark.parametrize('sign_up_fixture', USER_FIRST_NAME_INVALID, indirect=True)
+    def test_first_name_invalid(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'First name contains invalid characters'"):
+            assert_message_in_response(response, "First name contains invalid characters")
+
+    @allure.title("Verify that user can not register with too long first name")
+    @allure.description(
+        """        
+        WHEN the user attempts to register with too long first name,
+        THEN the system should reject the request, 
+        AND return an error message indicating that the first name is too long.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16252946/5."
+                  "+Sign+up+User+Registration#5.4-First-Name-Constraints-Validation-(Implemented)"), name="FR5.4")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/107", name="Test IT Test-Case #107")
+    @pytest.mark.parametrize('sign_up_fixture', USER_FIRST_NAME_LONG, indirect=True)
+    def test_first_name_long(self, sign_up_fixture):
+        response = sign_up_fixture["response"]
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'First name is too long'"):
+            assert_message_in_response(response, "First name is too long")

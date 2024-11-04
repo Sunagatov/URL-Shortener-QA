@@ -63,3 +63,17 @@ USER_PASSWORD_LONG = [
 USER_PASSWORD_INVALID = [
     ('Ilya', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
 ]
+
+USER_FIRST_NAME_EMPTY = [
+    ('', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+]
+
+USER_FIRST_NAME_INVALID = [
+    ('Alex12', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28),
+    ('Mel@man!', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28),
+    ('Anna Gloria', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+]
+
+USER_FIRST_NAME_LONG = [
+    ('AnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnana', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+]
