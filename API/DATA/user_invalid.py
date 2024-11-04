@@ -25,7 +25,10 @@ USER_EMAIL_INVALID = [
 ]
 
 USER_EMAIL_LONG = [
-    ('Ilya', 'Ilyin', 'mail@vOwMHeEWodFHcVaInngAkixEWDdT.mmnvudSGWjeHIHbJPecEF4gwX62xS.fkXJv4I365ylcfn7T4kvnCd91G9uz8OdH5RrNc6TsW.4AyHZg1FLNSTjjz1YO6IVHqE2v7pQLeGxySv0.asKIyyKSNxXLQqYakc0MfXoXIX8TQNX5.CKugWYrbcjYgchqzerhPGUM1ItNfTXYRbO.oT8Bk1Qnk6gCXg52Uwhqweeewwwwww5Dg5svDdAd5AxrFWazB.5P', '123456Qwerty!', 'Russia', 28)
+    ('Ilya', 'Ilyin', ('mail@vOwMHeEWodFHcVaInngAkixEWDdT.mmnvudSGWjeHIHbJPecEF4gwX62xS'
+                       '.fkXJv4I365ylcfn7T4kvnCd91G9uz8OdH5RrNc6TsW.4AyHZg1FLNSTjjz1YO6IVHqE2v7pQLeGxySv0'
+                       '.asKIyyKSNxXLQqYakc0MfXoXIX8TQNX5.CKugWYrbcjYgchqzerhPGUM1ItNfTXYRbO'
+                       '.oT8Bk1Qnk6gCXg52Uwhqweeewwwwww5Dg5svDdAd5AxrFWazB.5P'), '123456Qwerty!', 'Russia', 28)
 ]
 
 USER_PASSWORD_EMPTY = [
@@ -65,15 +68,31 @@ USER_PASSWORD_INVALID = [
 ]
 
 USER_FIRST_NAME_EMPTY = [
-    ('', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+    ('', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28)
 ]
 
 USER_FIRST_NAME_INVALID = [
-    ('Alex12', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28),
-    ('Mel@man!', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28),
-    ('Anna Gloria', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+    ('Alex12', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28),
+    ('Mel@man!', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28),
+    ('Anna Gloria', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28)
 ]
 
 USER_FIRST_NAME_LONG = [
-    ('AnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnana', 'Ilyin', '12345mailtest@gmail.com', 'Пароль123!', 'Russia', 28)
+    ('AnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnanAnnana', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!',
+     'Russia', 28)
+]
+
+USER_LAST_NAME_EMPTY = [
+    ('Ilya', '', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28)
+]
+
+USER_LAST_NAME_INVALID = [
+    ('Ilya', 'Testov12', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28),
+    ('Ilya', 'Test)ov!', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28),
+    ('Ilya', 'Oblo mov', '12345mailtest@gmail.com', '123456Qwerty!', 'Russia', 28)
+]
+
+USER_LAST_NAME_LONG = [
+    ('Ilya', 'PetrovpetrPetrovpetrPetrovpetrPetrovpetrPetrovpetre', '12345mailtest@gmail.com', '123456Qwerty!',
+     'Russia', 28)
 ]
