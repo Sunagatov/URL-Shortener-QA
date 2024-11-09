@@ -12,10 +12,10 @@ USER_VALID = [
                   'OIcEYgBptFcrLVBOdebBzCfzBpFLxPnHaxwsMLCickFgFrIHTw', 120),
                  marks=pytest.mark.xfail(reason="Bug: https://shorty-url.atlassian.net/browse/SHORTY-79", run=True)),
     ('Ilya-Petya', 'Ilya-Petya', 'mail_mail@mail.ru', '1234567Qwerty$', 'Russian Federation', 28),
-    ("Ilya'Petya", "Ilya'Petya", 'mail-mail@mail.ru', '1234567Qwerty$', 'France', 28),
+    ("Ilya'Petya", "Ilya'Petya", 'mail-mail@mail.ru', '1234567Qwerty$', 'FRANCE', 28),
     ("Ilya-Petya'Vova", "Ilya-Petya'Vova", 'mail+mail@mail.ru', '1234567Qwerty$', 'France', 28),
     ('Ilya', 'Ilya', 'mail@m1OlTXt9tJvS0mZGBVL36zlp3NWRA7O47SUGdyrjk2sAUCnAKEKUFljHCia9W8l.com',
-     '1234567Qwerty$', 'France', 28),
+     '1234567Qwerty$', 'france', 28),
     ('Ilya', 'Ilya', 'mail@mail-mail.ru', '1234567Qwerty$', 'France', 28)
 ]
 
