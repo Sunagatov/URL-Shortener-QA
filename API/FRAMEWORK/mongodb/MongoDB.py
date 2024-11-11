@@ -1,3 +1,5 @@
+import datetime
+
 import certifi
 from pymongo import MongoClient, UpdateOne
 from allure import step
@@ -114,3 +116,40 @@ class MongoDB:
             url_mappings_collection = db[self.db_collection]
 
         return url_mappings_collection.find_one({"shortUrl": short_url})
+
+    @step('Update expiration time of short URL in MongoDB')
+    def update_expiration_time(self, short_url: str, new_expiration_date: datetime) -> None:
+        with step(f'Get {self.db_name} database'):
+            db = self.mongodb_client[self.db_name]
+
+        with step(f'Get {self.db_collection} collection'):
+            url_mappings_collection = db[self.db_collection]
+
+        with step('Update expiration time of short URL'):
+            result = url_mappings_collection.update_one(
+                {"shortUrl": short_url},
+                {"$set": {"expirationDate": new_expiration_date}}
+            )
+
+            if result.matched_count == 0:
+                raise ValueError(f"Failed to update expiration date for {short_url}.")
+
+            if result.modified_count == 0:
+                raise ValueError(f"Failed to update expiration date for {short_url}.") @ step(
+                    'Update expiration time of short URL in MongoDB')
+
+    def update_created_at_time(self, short_url: str, new_created_at: datetime) -> None:
+        with step(f'Get {self.db_name} database'):
+            db = self.mongodb_client[self.db_name]
+
+        with step(f'Get {self.db_collection} collection'):
+            url_mappings_collection = db[self.db_collection]
+
+        with step('Update expiration time of short URL'):
+            result = url_mappings_collection.update_one(
+                {"shortUrl": short_url},
+                {"$set": {"createdAt": new_created_at}}
+            )
+
+            if result.matched_count == 0:
+                raise ValueError(f"Failed to update expiration date for {short_url}.")
