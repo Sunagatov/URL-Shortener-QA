@@ -44,7 +44,7 @@ class TestExpirationTime:
                  name="Swagger")
     @allure.link(
         "https://team-bov4.testit.software/projects/1/tests?isolatedSection=5f9d72fd-d528-4513-9086-6e067c9a2999",
-        name="Test IT Test-Case #124, 125, 117")
+        name="Test IT Test-Case #124, 125, 117, 122,121")
     @allure.link(
         "https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16023559/4.+Expiration+Time#4.2-Custom-Expiration-Time-(Implemented)",
         name="FR4.2")
@@ -61,6 +61,8 @@ class TestExpirationTime:
             ({'original_url': f'https://ya{time.time()}.ru', 'days_count': "30"}),
             ({'original_url': f'https://ya{time.time()}.ru', 'days_count': "364"}),
             ({'original_url': f'https://ya{time.time()}.ru', 'days_count': "2"}),
+            ({'original_url': f'https://ya{time.time()}.ru', 'days_count': "1"}),
+            ({'original_url': f'https://ya{time.time()}.ru', 'days_count': "365"}),
 
         ],
         indirect=True
@@ -77,7 +79,7 @@ class TestExpirationTime:
     @allure.link("https://short-link.zufargroup.com/api/v1/swagger-ui/index.html",
                  name="Swagger")
     @allure.link("https://team-bov4.testit.software/projects/1/tests",
-                 name="Test IT Test-Case #118, 119")
+                 name="Test IT Test-Case #118, 119, 126")
     @allure.link(
         "https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/16023559/4.+Expiration+Time#4.3-Time-Limits-for-Custom-Expiration-(Implemented)",
         name="FR4.3")
@@ -98,6 +100,14 @@ class TestExpirationTime:
                     },
                     400,
                     'Days count must be at least 1 day(s).'
+            ),
+            (
+                    {
+                        'original_url': f'https://ya{time.time()}.ru',
+                        'days_count': "390",
+                    },
+                    400,
+                    'Days count must not exceed 365 day(s).'
             ),
             (
                     {
