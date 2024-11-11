@@ -6,6 +6,7 @@ from hamcrest import assert_that, is_not
 from API.DATA.user_valid import USER_VALID
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
 from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
+from API.FRAMEWORK.assertion.assert_user_in_mongodb import is_user_in_mongodb
 
 
 @allure.feature("5. Sign up (User Registration)")
@@ -44,3 +45,6 @@ def test_sign_up(sign_up_fixture):
             is_not(None),
             reason='There is not refreshToken field in the response body'
         )
+
+    email = sign_up_fixture["user_data"][2]
+    is_user_in_mongodb(email)

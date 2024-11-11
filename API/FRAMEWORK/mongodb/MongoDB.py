@@ -29,6 +29,19 @@ class MongoDB:
             result = url_mappings_collection.delete_one(query)
             return result.deleted_count
 
+    @step('Count users by email in MongoDB')
+    def count_users(self, email: str) -> int:
+        with step(f'Get {self.db_name}'):
+            shorty_url_db = self.mongodb_client[self.db_name]
+
+        with step(f'Get {self.db_collection} collection'):
+            user_details_collection = shorty_url_db[self.db_collection]
+
+        with step('Count users'):
+            query = {"email": email}
+            count = user_details_collection.count_documents(query)
+            return count
+
     @step('Delete user from MongoDB')
     def delete_user(self, email: str) -> int:
         with step(f'Get {self.db_name}'):

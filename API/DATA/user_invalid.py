@@ -98,7 +98,8 @@ USER_LAST_NAME_LONG = [
 ]
 
 USER_COUNTRY_INVALID = [
-    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'USA123!', 21)
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'USA123', 21),
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!', 'USA@', 21)
 ]
 
 USER_COUNTRY_EMPTY = [
@@ -107,7 +108,9 @@ USER_COUNTRY_EMPTY = [
 
 USER_COUNTRY_LONG = [
     ('Ilya', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!',
-     'AReallyLongCountryNameThatExceedsTheMaximumAllowedLengthForTestingPurposes', 21)
+     'AReallyLongCountryNameThatExceedsTheMaximumAllowedLengthForTestingPurposes', 21),
+    ('Ilya', 'Ilyin', '12345mailtest@gmail.com', '123456Qwerty!',
+     'RussiaRussiaRussiaRussiaRussiaRussiaRussiaRussiaRus', 21)
 ]
 
 USER_AGE_INVALID = [
