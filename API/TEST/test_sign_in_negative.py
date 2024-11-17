@@ -12,7 +12,7 @@ from API.FRAMEWORK.assertion.assert_response_message import assert_message_in_re
 @allure.feature("6. Sign in (User Authentication)")
 @allure.severity(allure.severity_level.CRITICAL)
 class TestSignInNegative:
-    @allure.title("Checking authorization using email not existing in the system")
+    @allure.title("Check authorization using email not existing in the system")
     @allure.description(
         """
         GIVEN an email that does not exist,
@@ -40,3 +40,31 @@ class TestSignInNegative:
 
         with step("Verify response message is 'Invalid email or password'"):
             assert_message_in_response(response, "Invalid email or password")
+
+    @allure.title("Check authorization with an empty email field")
+    @allure.description(
+        """
+        GIVEN a user submits a sign-in request with an empty email,
+        WHEN the request is processed,
+        THEN the system should reject the request 
+        AND return an error message with HTTP status code 400 Bad Request indicating that the email is required.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/18251777/6."
+                  "+Sign+in+User+Authentication#6.2.1-Empty-Email"), name="FR6.2.1")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/131", name="Test IT Test-Case #131")
+    def test_email_empty(self):
+        email = ''
+        password = 'Password134'
+
+        auth_api = AuthAPI()
+        response = auth_api.sign_in(email, password)
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Email must not be empty'"):
+            assert_message_in_response(response, "Email must not be empty")
