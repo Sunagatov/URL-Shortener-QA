@@ -71,7 +71,7 @@ class TestSignInNegative:
         with step("Verify response message is 'Email must not be empty'"):
             assert_message_in_response(response, "Email must not be empty")
 
-    @allure.title(" Check authorization with an invalid email field")
+    @allure.title("Check authorization with an invalid email field")
     @allure.description(
         """
         GIVEN a user submits an email that is invalid (too long, too short, or incorrect format),
@@ -100,3 +100,31 @@ class TestSignInNegative:
 
         with step("Verify response message is 'Invalid email or password'"):
             assert_message_in_response(response, "Invalid email or password")
+
+    @allure.title("Check authorization with an empty password field")
+    @allure.description(
+        """
+        GIVEN a user submits a sign-in request without a password,
+        WHEN the request is processed,
+        THEN the system should reject the request 
+        AND return an error message with HTTP status code 400 Bad Request indicating that the password is required.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/18251777/6."
+                  "+Sign+in+User+Authentication#6.3.1-Empty-Password"), name="FR6.3.1")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/132", name="Test IT Test-Case #132")
+    def test_password_empty(self):
+        email = '123test@gmail.com'
+        password = ''
+
+        auth_api = AuthAPI()
+        response = auth_api.sign_in(email, password)
+
+        with step("Verify status code is 400"):
+            assert_status_code(response, 400)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Password must not be empty'"):
+            assert_message_in_response(response, "Password must not be empty")
