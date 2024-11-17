@@ -144,7 +144,7 @@ class TestSignInNegative:
                   "+Sign+in+User+Authentication#6.3.2-Invalid-Password-(Implemented)"), name="FR6.3.2")
     @allure.link("https://team-bov4.testit.software/projects/1/tests/135", name="Test IT Test-Case #135")
     @pytest.mark.parametrize('password_invalid', PASSWORD_INVALID)
-    def test_email_invalid(self, password_invalid: str):
+    def test_password_invalid(self, password_invalid: str):
         email = '123test@gmail.com'
         password = password_invalid
 
