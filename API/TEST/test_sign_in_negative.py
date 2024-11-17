@@ -4,6 +4,7 @@ import time
 from allure import step
 
 from API.DATA.email_invalid import EMAIL_INVALID
+from API.DATA.password_invalid import PASSWORD_INVALID
 
 from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
 from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
@@ -128,3 +129,33 @@ class TestSignInNegative:
 
         with step("Verify response message is 'Password must not be empty'"):
             assert_message_in_response(response, "Password must not be empty")
+
+    @allure.title("Check authorization with an invalid password field")
+    @allure.description(
+        """
+        GIVEN a user submits a password that is invalid (too long, too short, or incorrect),
+        WHEN the request is processed,
+        THEN the system should reject the request 
+        AND return an error message with HTTP status code 401 Unauthorized 
+            indicating that the email or password is invalid.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/18251777/6."
+                  "+Sign+in+User+Authentication#6.3.2-Invalid-Password-(Implemented)"), name="FR6.3.2")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/135", name="Test IT Test-Case #135")
+    @pytest.mark.parametrize('password_invalid', PASSWORD_INVALID)
+    def test_email_invalid(self, password_invalid: str):
+        email = '123test@gmail.com'
+        password = password_invalid
+
+        auth_api = AuthAPI()
+        response = auth_api.sign_in(email, password)
+
+        with step("Verify status code is 401"):
+            assert_status_code(response, 401)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Invalid email or password'"):
+            assert_message_in_response(response, "Invalid email or password")
