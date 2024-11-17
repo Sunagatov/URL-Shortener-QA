@@ -32,3 +32,14 @@ class AuthAPI:
         response = requests.post(url=path, json=body)
         log_request(response)
         return response
+
+    @step('Sign-in')
+    def sign_in(self, email: str, password: str) -> Response:
+        path = f'{self.url}/signin'
+        body = {
+            "email": email,
+            "password": password,
+        }
+        response = requests.post(url=path, json=body)
+        log_request(response)
+        return response

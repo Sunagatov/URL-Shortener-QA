@@ -1,0 +1,42 @@
+import allure
+# import pytest
+import time
+from allure import step
+
+from API.FRAMEWORK.api_endpoints.api_auth import AuthAPI
+from API.FRAMEWORK.assertion.assert_status_code import assert_status_code
+from API.FRAMEWORK.assertion.assert_content_type import assert_content_type
+from API.FRAMEWORK.assertion.assert_response_message import assert_message_in_response
+
+
+@allure.feature("6. Sign in (User Authentication)")
+@allure.severity(allure.severity_level.CRITICAL)
+class TestSignInNegative:
+    @allure.title("Checking authorization using email not existing in the system")
+    @allure.description(
+        """
+        GIVEN an email that does not exist,
+        WHEN the user attempts to sign in with that email,
+        THEN the system should reject the request 
+        AND return an error message indicating that the email is not found.
+        """
+    )
+    @allure.link(("https://shorty-url.atlassian.net/wiki/spaces/SKB/pages/18251777/6."
+                  "+Sign+in+User+Authentication#6.1-User-Email-Does-Not-Exists-in-the-System-(Implemented)"),
+                 name="FR6.1")
+    @allure.link("https://team-bov4.testit.software/projects/1/tests/133", name="Test IT Test-Case #133")
+    def test_email_not_exist(self):
+        email = f'mail{time.time()}.yandex.ru'
+        password = 'Password134'
+
+        auth_api = AuthAPI()
+        response = auth_api.sign_in(email, password)
+
+        with step("Verify status code is 401"):
+            assert_status_code(response, 401)
+
+        with step("Verify content-type is 'application/json'"):
+            assert_content_type(response, "application/json")
+
+        with step("Verify response message is 'Invalid email or password'"):
+            assert_message_in_response(response, "Invalid email or password")
